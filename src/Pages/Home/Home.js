@@ -13,6 +13,13 @@ function Home() {
       .then((response) => response.json())
       .then((data) => setTracks(data.data.items[4].items));
   });
+  // useEffect(() => {
+  //   const fetchApi = async () => {
+  //     const data = await homeServices.home();
+  //     console.log(data);
+  //   };
+  //   fetchApi();
+  // });
   return (
     <div className={cx("wrapper")}>
       {[Tracks].map((track, index) => {

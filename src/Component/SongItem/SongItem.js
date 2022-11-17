@@ -1,12 +1,19 @@
 import classNames from "classnames/bind";
+import { useDispatch } from "react-redux";
+import { setSongId } from "~/Redux/audioSlice";
 
 import { PlayIcon } from "../Icons";
-import PlayBar from "../PlayBar";
 import styles from "./SongItem.module.scss";
 
 const cx = classNames.bind(styles);
 
 function SongItem(data) {
+  const dispatch = useDispatch();
+
+  const handlePlay = (id) => {
+    dispatch(setSongId(id));
+  };
+
   return (
     <div className={cx("wrapper")}>
       {[data?.data?.song].map((songs, index) => {
@@ -15,7 +22,10 @@ function SongItem(data) {
             {songs?.items.map((item) => {
               return (
                 <div className={cx("items")} key={item.encodeId}>
-                  <div className={cx("controls")}>
+                  <div
+                    className={cx("controls")}
+                    onClick={() => handlePlay(item?.encodeId)}
+                  >
                     <PlayIcon className={cx("icon")} />
                   </div>
                   <img className={cx("thumb")} src={item.thumbnail} />
@@ -41,7 +51,6 @@ function SongItem(data) {
                         : item.duration % 60}
                     </div>
                   </div>
-                  <PlayBar data={item} />
                 </div>
               );
             })}
