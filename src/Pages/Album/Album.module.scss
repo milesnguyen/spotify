@@ -1,0 +1,63 @@
+.wrapper {
+  color: var(--white);
+}
+.top {
+  width: 100%;
+  height: 320px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+
+  img {
+    width: 18%;
+    height: 72%;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+}
+.inner {
+  display: flex;
+  flex-direction: column;
+
+  span {
+    font-size: 1.4rem;
+    color: var(--white);
+  }
+
+  .artists {
+    font-size: 1.2rem;
+    color: #b2aea7;
+  }
+}
+.title {
+  font-size: 8rem;
+  line-height: 10rem;
+}
+.desc {
+  font-size: 2rem;
+  line-height: 3rem;
+  color: #b2aea7;
+}
+.head {
+  width: 100%;
+  padding: 0 36px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.2rem;
+  line-height: 3.6rem;
+  color: #b3b3b3;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border-bottom: 1px solid hsla(0, 0%, 100%, 0.1);
+  margin-bottom: 16px;
+  h4 {
+    width: 30%;
+  }
+  p {
+    width: 25%;
+  }
+  span {
+    width: 14%;
+  }
+}

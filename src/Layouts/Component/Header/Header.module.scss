@@ -1,0 +1,76 @@
+.wrapper {
+  width: 84%;
+  float: right;
+  height: var(--default-height-header);
+  background-color: var(--primary);
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  margin-bottom: 64px;
+}
+.inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  padding: 0 32px;
+}
+.controls {
+  display: flex;
+  gap: 16px;
+}
+.btn {
+  background-color: #000000b3;
+  fill: var(--white);
+}
+
+.user {
+  width: 161px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--white);
+  fill: var(--white);
+  background-color: #000000b3;
+  border-radius: 20px;
+  padding: 2px;
+  cursor: pointer;
+}
+.name {
+  line-height: 2.8rem;
+  font-weight: 700;
+  font-size: 1.4rem;
+}
+.avt img {
+  width: 28px;
+  height: 28px;
+  object-fit: cover;
+  border-radius: 50%;
+  display: flex;
+}
+.btnBottom {
+  width: 16px;
+  height: 16px;
+  margin-right: 6px;
+}
+.menu {
+  background-color: #302e2e;
+  color: var(--white);
+  list-style: none;
+  padding: 4px;
+  border-radius: 4px;
+
+  .item {
+    line-height: 1.6rem;
+    padding: 12px 8px 12px 12px;
+
+    + .separate {
+      border-top: 1px solid rgba(130, 130, 130, 0.326);
+    }
+
+    &:hover {
+      background-color: #ffffff1a;
+    }
+  }
+}

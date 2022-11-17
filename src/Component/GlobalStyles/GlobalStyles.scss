@@ -1,0 +1,38 @@
+@import url("https://fonts.cdnfonts.com/css/circular-std");
+
+:root {
+  --primary: #1ed760;
+  --black: #000;
+  --white: #fff;
+
+  --font: "Circular Std", sans-serif;
+
+  --defaultLayout-height: 509px;
+  --default-width-sidebar: 16%;
+  --default-height-header: 64px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html {
+  font-size: 62.5%;
+}
+body {
+  font-family: var(--font);
+  font-size: 1.6rem;
+  line-height: 1.5;
+  text-rendering: optimizespeed;
+  overflow-y: overlay;
+}
+body::-webkit-scrollbar {
+  display: none;
+}
+::-webkit-scrollbar {
+  width: 16px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: hsla(0, 0%, 100%, 0.3);
+}
