@@ -7,11 +7,12 @@ const initialState = {
   playlistId: localStorage.getItem("playlistId") || "",
   currentIndexSong: 0,
   currentIndexSongRandom: 0,
-  infoSongPlayer: JSON.parse(localStorage.getItem("songInfo")) || {
-    title: "Tên bài hát",
-    artistsNames: "artistsNames",
-    duration: 0,
-  },
+  // infoSongPlayer: JSON.parse(localStorage.getItem("songInfo")) || {
+  //   title: "Tên bài hát",
+  //   artistsNames: "artistsNames",
+  //   duration: 0,
+  // },
+  infoSongPlayer: localStorage.getItem("songInfo") || "",
   srcAudio: "",
   srcRadio: "",
   currentTime: 0,
@@ -48,8 +49,8 @@ export const audioSlice = createSlice({
       localStorage.setItem("playlistId", JSON.stringify(action.payload));
     },
     setInfoSongPlayer: (state, action) => {
-      state.infoSongPlayer = { ...action.payload };
-      localStorage.setItem("songInfo", JSON.stringify({ ...action.payload }));
+      state.infoSongPlayer = action.payload;
+      localStorage.setItem("songInfo", JSON.stringify(action.payload));
     },
     setSrcAudio: (state, action) => {
       state.srcAudio = action.payload;

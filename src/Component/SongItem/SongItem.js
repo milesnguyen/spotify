@@ -1,6 +1,6 @@
 import classNames from "classnames/bind";
 import { useDispatch } from "react-redux";
-import { setSongId } from "~/Redux/audioSlice";
+import { setInfoSongPlayer, setSongId } from "~/Redux/audioSlice";
 
 import { PlayIcon } from "../Icons";
 import styles from "./SongItem.module.scss";
@@ -10,8 +10,9 @@ const cx = classNames.bind(styles);
 function SongItem(data) {
   const dispatch = useDispatch();
 
-  const handlePlay = (id) => {
+  const handlePlay = (title, artists, id) => {
     dispatch(setSongId(id));
+    dispatch(setInfoSongPlayer(title));
   };
 
   return (
@@ -24,7 +25,9 @@ function SongItem(data) {
                 <div className={cx("items")} key={item.encodeId}>
                   <div
                     className={cx("controls")}
-                    onClick={() => handlePlay(item?.encodeId)}
+                    onClick={() =>
+                      handlePlay(item.title, item.artistsNames, item?.encodeId)
+                    }
                   >
                     <PlayIcon className={cx("icon")} />
                   </div>
