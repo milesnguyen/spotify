@@ -39,8 +39,8 @@ function Album() {
           <p>album</p>
           <span>time</span>
         </div>
-        {[playList].map((songs, index) => {
-          return <SongItem key={index} data={songs} />;
+        {[playList?.song?.items].map((songs) => {
+          return <SongItem data={songs} key={playList?.encodeId} />;
         })}
       </div>
     </div>

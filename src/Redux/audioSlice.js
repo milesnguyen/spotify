@@ -5,7 +5,7 @@ const initialState = {
   isMute: false,
   songId: localStorage.getItem("songId") || "",
   playlistId: localStorage.getItem("playlistId") || "",
-  currentIndexSong: 0,
+  currentIndexSong: "",
   currentIndexSongRandom: 0,
   // infoSongPlayer: JSON.parse(localStorage.getItem("songInfo")) || {
   //   title: "Tên bài hát",
