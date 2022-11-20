@@ -1,13 +1,85 @@
-.playBar {
+.wrapper {
   width: 100%;
-  z-index: 9999;
+  height: 90px;
   position: fixed;
   bottom: 0;
-  left: 0;
+  padding: 18px;
   background-color: #181818;
+  color: var(--white);
   border-top: 1px solid #282828;
+}
+.inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+.head {
+  width: 33.3333%;
+  display: flex;
+  align-items: center;
+}
+.thumb {
+  width: 58px;
+  height: 58px;
+}
+.item {
+  margin-left: 16px;
 
-  svg {
-    fill: var(--white) !important;
+  p {
+    font-size: 1.4rem;
+    line-height: 2rem;
   }
+  span {
+    font-size: 1.2rem;
+    line-height: 1.6rem;
+    color: #b3b3b3;
+  }
+}
+
+.body {
+  width: 33.3333%;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  span {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 8px;
+
+    &:hover {
+      svg {
+        color: var(--white);
+      }
+    }
+    svg {
+      color: #a1a1a1;
+    }
+  }
+  .pause,
+  .play {
+    border-radius: 50%;
+    background-color: var(--white);
+    &:hover {
+      svg {
+        color: var(--black);
+      }
+    }
+    svg {
+      color: var(--black);
+    }
+  }
+}
+
+.footer {
+  width: 33.3333%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

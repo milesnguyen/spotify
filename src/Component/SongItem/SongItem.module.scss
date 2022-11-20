@@ -5,9 +5,14 @@
   .inner {
     display: flex;
     justify-content: space-between;
+    padding: 0 20px;
   }
 }
-
+.controls {
+  svg {
+    color: var(--white);
+  }
+}
 .head {
   width: 44.44444%;
 

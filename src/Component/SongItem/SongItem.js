@@ -4,9 +4,11 @@ import { useLocation } from "react-router";
 import {
   setCurrnetIndexSong,
   setInfoSongPlayer,
+  setIsPlay,
   setPlaylistSong,
   setSongId,
 } from "~/Redux/audioSlice";
+import { PauseIcon, PlayIcon } from "../Icons";
 
 import styles from "./SongItem.module.scss";
 
@@ -16,13 +18,15 @@ function SongItem(data) {
   const songId = useSelector((state) => state.audio.songId);
   const currentIndexSong = useSelector((state) => state.audio.currentIndexSong);
   const playlistSong = useSelector((state) => state.audio.playlistSong);
+  const isPlay = useSelector((state) => state.audio.isPlay);
 
   const dispatch = useDispatch();
 
-  const handlePlay = (title, song, id) => {
+  const handlePlay = (info, song, id) => {
     dispatch(setSongId(id));
-    dispatch(setInfoSongPlayer(title));
+    dispatch(setInfoSongPlayer(info));
     dispatch(setPlaylistSong(song));
+    dispatch(setIsPlay(true));
 
     if (playlistSong) {
       let currentSongs;
@@ -32,18 +36,27 @@ function SongItem(data) {
       dispatch(setCurrnetIndexSong(currentSongs + 1));
     }
   };
-
+  const handlePause = () => {
+    dispatch(setIsPlay(true));
+  };
   return (
     <div className={cx("wrapper")}>
       {data?.data?.map((songs) => {
         return (
-          <div
-            className={cx("inner")}
-            key={songs?.encodeId}
-            onClick={() =>
-              handlePlay(songs?.title, data?.data, songs?.encodeId)
-            }
-          >
+          <div className={cx("inner")} key={songs?.encodeId}>
+            <div className={cx("controls")}>
+              {!isPlay ? (
+                <span
+                  onClick={() => handlePlay(songs, data?.data, songs?.encodeId)}
+                >
+                  <PlayIcon />
+                </span>
+              ) : (
+                <span>
+                  <PauseIcon />
+                </span>
+              )}
+            </div>
             <div className={cx("head")}>
               <img src={songs.thumbnailM} className={cx("thumb")} />
               <div className={cx("items")}>
