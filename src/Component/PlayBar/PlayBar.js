@@ -51,18 +51,42 @@ function PlayBar(data) {
     dispatch(setCurrnetIndexSong(currentIndexSong + 1));
     dispatch(setSongId(playlistSong[currentIndexSong]?.encodeId));
     dispatch(setInfoSongPlayer(playlistSong[currentIndexSong].title));
-    console.log(currentIndexSong);
-    console.log(playlistSong[currentIndexSong].title);
+    dispatch(setIsPlay(true));
   };
   const handlePrev = () => {
     dispatch(setCurrnetIndexSong(currentIndexSong - 1));
     dispatch(setSongId(playlistSong[currentIndexSong]?.encodeId));
     dispatch(setInfoSongPlayer(playlistSong[currentIndexSong].title));
-    console.log(currentIndexSong);
-  };
+    dispatch(setIsPlay(true));
 
+    console.log(isPlay);
+  };
+  const handlePlay = () => {
+    if (isPlay) {
+      dispatch(setIsPlay(false));
+      if (audioRef) {
+        audioRef.current.pause();
+      }
+    } else {
+      dispatch(setIsPlay(true));
+      if (audioRef) {
+        audioRef.current.play();
+      }
+    }
+  };
+  const handlePause = () => {
+    audioRef.current.pause();
+    dispatch(setIsPlay(false));
+  };
   useEffect(() => {
     document.title = playlistSong[currentIndexSong].title;
+  });
+  useEffect(() => {
+    if (isPlay) {
+      audioRef.current.play();
+    } else {
+      audioRef.current.pause();
+    }
   });
   return (
     <div className={cx("wrapper")}>
@@ -70,8 +94,8 @@ function PlayBar(data) {
         <div className={cx("head")}>
           <img
             className={cx("thumb")}
-            src={playlistSong[currentIndexSong].thumbnail}
-            alt={playlistSong[currentIndexSong].alias}
+            src={playlistSong[currentIndexSong]?.thumbnail}
+            alt={playlistSong[currentIndexSong]?.alias}
           />
           <div className={cx("item")}>
             <p>{playlistSong[currentIndexSong].title}</p>
@@ -92,23 +116,13 @@ function PlayBar(data) {
             </Tippy>
             {isPlay ? (
               <Tippy content={"Pause"}>
-                <span
-                  className={cx("pause")}
-                  onClick={() => {
-                    dispatch(setIsPlay(false));
-                  }}
-                >
+                <span className={cx("pause")} onClick={handlePause}>
                   <PauseIcon />
                 </span>
               </Tippy>
             ) : (
               <Tippy content={"play"}>
-                <span
-                  className={cx("play")}
-                  onClick={() => {
-                    dispatch(setIsPlay(true));
-                  }}
-                >
+                <span className={cx("play")} onClick={handlePlay}>
                   <PlayIcon />
                 </span>
               </Tippy>
@@ -124,11 +138,31 @@ function PlayBar(data) {
                 <LoopIcon />
               </span>
             </Tippy>
+            <audio ref={audioRef} src={srcAudio} />
           </div>
-          <div className={cx("bottom")}></div>
+          <div className={cx("bottom")}>
+            <span className={cx("time")}>00:00</span>
+            <input
+              type="range"
+              className={cx("progress")}
+              min={0}
+              max={playlistSong[currentIndexSong].duration}
+            />
+            <span className={cx("time")}>
+              {" "}
+              {Math.floor(playlistSong[currentIndexSong].duration / 60) < 10
+                ? "0" + Math.floor(playlistSong[currentIndexSong].duration / 60)
+                : Math.floor(playlistSong[currentIndexSong].duration / 60)}
+              :
+              {playlistSong[currentIndexSong].duration % 60 < 10
+                ? "0" + (playlistSong[currentIndexSong].duration % 60)
+                : playlistSong[currentIndexSong].duration % 60}
+            </span>
+          </div>
         </div>
         <div className={cx("footer")}>
-          <AudioIcon />
+          <AudioIcon className={cx("icon")} />
+          <input type="range" className={cx("volume")} min={0} max="100" />
         </div>
       </div>
     </div>
