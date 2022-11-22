@@ -29,7 +29,8 @@ function Album() {
           <p className={cx("desc")}>{playList.sortDescription}</p>
           <span className={cx("artists")}>{playList.artistsNames}</span>
           <span>
-            <p>{playList.like} Lượt thích</p> <p>{playList.listen} Lượt nghe</p>
+            <p>{`${Math.round(playList.like / 1000)}`} Lượt thích</p>
+            <p>{`${Math.round(playList.listen / 1000)}`} Lượt nghe</p>
           </span>
         </div>
       </header>

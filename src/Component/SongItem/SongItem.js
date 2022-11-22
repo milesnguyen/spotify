@@ -1,6 +1,5 @@
 import classNames from "classnames/bind";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router";
 import {
   setCurrnetIndexSong,
   setInfoSongPlayer,
@@ -22,12 +21,11 @@ function SongItem(data) {
 
   const dispatch = useDispatch();
 
-  const handlePlay = (info, song, id) => {
+  const handleClick = (info, song, id) => {
     dispatch(setSongId(id));
     dispatch(setInfoSongPlayer(info));
     dispatch(setPlaylistSong(song));
     dispatch(setIsPlay(true));
-
     if (playlistSong) {
       let currentSongs;
       playlistSong?.forEach((item, index) => {
@@ -43,12 +41,14 @@ function SongItem(data) {
     <div className={cx("wrapper")}>
       {data?.data?.map((songs) => {
         return (
-          <div className={cx("inner")} key={songs?.encodeId}>
+          <div
+            className={cx("inner")}
+            key={songs?.encodeId}
+            onClick={() => handleClick(songs, data?.data, songs?.encodeId)}
+          >
             <div className={cx("controls")}>
               {!isPlay ? (
-                <span
-                  onClick={() => handlePlay(songs, data?.data, songs?.encodeId)}
-                >
+                <span>
                   <PlayIcon />
                 </span>
               ) : (
