@@ -1,21 +1,43 @@
 .wrapper {
   width: 100%;
   padding: 0 20px;
+  padding-bottom: 120px;
 
   .inner {
     display: flex;
     justify-content: space-between;
     padding: 0 20px;
+    position: relative;
+    border-radius: 4px;
+
+    &:hover {
+      background-color: #5a5a5a;
+      .icon {
+        display: block;
+      }
+    }
   }
 }
+.inner:hover ~ .icon {
+  display: none;
+}
+.play {
+  color: var(--primary) !important;
+}
 .controls {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+
+  .icon {
+    display: none;
+  }
   svg {
     color: var(--white);
   }
 }
 .head {
   width: 44.44444%;
-
   display: flex;
   align-items: center;
 
@@ -39,7 +61,23 @@
 }
 .album {
   width: 38%;
+  display: flex;
+  align-items: center;
 }
 .time {
   width: 15%;
+  display: flex;
+  align-items: center;
+}
+.vip {
+  opacity: 60%;
+  pointer-events: none;
+}
+.tag {
+  position: relative;
+  background-color: var(--primary);
+  padding: 4px 10px;
+  margin-left: 22px;
+  color: var(--white) !important;
+  border-radius: 4px;
 }

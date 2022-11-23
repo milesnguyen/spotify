@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router";
 import SongItem from "~/Component/SongItem";
 import styles from "./Album.module.scss";
+import * as playListServices from "~/Services/playListServices";
 
 const cx = classNames.bind(styles);
 
@@ -11,14 +12,21 @@ function Album() {
   const data = location.pathname;
 
   const [playList, setPlayList] = useState([]);
+  // useEffect(() => {
+  //   fetch(
+  //     `https://apizingmp3.herokuapp.com/api/detailplaylist?id=${data.slice(4)}`
+  //   )
+  //     .then((response) => response.json())
+  //     .then((json) => setPlayList(json.data));
+  // });
 
   useEffect(() => {
-    fetch(
-      `https://apizingmp3.herokuapp.com/api/detailplaylist?id=${data.slice(4)}`
-    )
-      .then((response) => response.json())
-      .then((json) => setPlayList(json.data));
-  });
+    const fetchApi = async () => {
+      const res = await playListServices.album(`=${data.slice(4)}`);
+      setPlayList(res);
+    };
+    fetchApi();
+  }, [data]);
 
   return (
     <div className={cx("wrapper")}>
@@ -40,8 +48,8 @@ function Album() {
           <p>album</p>
           <span>time</span>
         </div>
-        {[playList?.song?.items].map((songs) => {
-          return <SongItem data={songs} key={playList?.encodeId} />;
+        {[playList?.song?.items].map((songs, index) => {
+          return <SongItem data={songs} key={index} />;
         })}
       </div>
     </div>

@@ -14,7 +14,6 @@ import {
   setSrcAudio,
 } from "~/Redux/audioSlice";
 import * as songServices from "~/Services/songServices";
-import httpRequest from "~/utils/httpRequest";
 import {
   AudioIcon,
   LoopIcon,
@@ -148,9 +147,9 @@ function PlayBar(data) {
         </div>
         <div className={cx("body")}>
           <div className={cx("controls")}>
-            <Tippy content={"Enable Shuffle"}>
-              <span>
-                {isRandom ? (
+            <span>
+              {isRandom ? (
+                <Tippy content={"Disable Shuffle"}>
                   <span
                     onClick={() => {
                       dispatch(setRandom(false));
@@ -158,13 +157,15 @@ function PlayBar(data) {
                   >
                     <RandomActiveIcon />
                   </span>
-                ) : (
+                </Tippy>
+              ) : (
+                <Tippy content={"Enable Shuffle"}>
                   <span onClick={handleShuffle}>
                     <RandomIcon />
                   </span>
-                )}
-              </span>
-            </Tippy>
+                </Tippy>
+              )}
+            </span>
             <Tippy content={"Previous"}>
               <span onClick={handlePrev}>
                 <PrevIcon />
