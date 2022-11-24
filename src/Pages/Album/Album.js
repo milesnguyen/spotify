@@ -4,12 +4,16 @@ import { useLocation } from "react-router";
 import SongItem from "~/Component/SongItem";
 import styles from "./Album.module.scss";
 import * as playListServices from "~/Services/playListServices";
+import { useDispatch } from "react-redux";
+import { setPlaylistId } from "~/Redux/audioSlice";
 
 const cx = classNames.bind(styles);
 
 function Album() {
   const location = useLocation();
   const data = location.pathname;
+
+  const dispatch = useDispatch();
 
   const [playList, setPlayList] = useState([]);
   // useEffect(() => {
@@ -44,6 +48,7 @@ function Album() {
       </header>
       <div className={cx("body")}>
         <div className={cx("head")}>
+          <h2>#</h2>
           <h4>title</h4>
           <p>album</p>
           <span>time</span>

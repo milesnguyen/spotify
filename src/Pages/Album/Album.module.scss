@@ -40,9 +40,8 @@
 }
 .head {
   width: 100%;
-  padding: 0 74px;
+  padding: 0 40px;
   display: flex;
-  justify-content: space-between;
   font-size: 1.2rem;
   line-height: 3.6rem;
   color: #b3b3b3;
@@ -51,11 +50,14 @@
   letter-spacing: 0.1em;
   border-bottom: 1px solid hsla(0, 0%, 100%, 0.1);
   margin-bottom: 16px;
+  h2 {
+    width: 3%;
+  }
   h4 {
-    width: 32%;
+    width: 44%;
   }
   p {
-    width: 25%;
+    width: 38%;
   }
   span {
     width: 13%;

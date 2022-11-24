@@ -21,6 +21,7 @@ function SongItem(data) {
   const notify = () => toast.info("Dành cho VIP");
 
   const songId = useSelector((state) => state.audio.songId);
+  const playlistId = useSelector((state) => state.audio.playlistId);
   const currentIndexSong = useSelector((state) => state.audio.currentIndexSong);
   const playlistSong = useSelector((state) => state.audio.playlistSong);
   const isPlay = useSelector((state) => state.audio.isPlay);
@@ -41,14 +42,20 @@ function SongItem(data) {
       dispatch(setCurrnetIndexSong(currentSongs));
     }
   };
+
   const handlePause = () => {
-    dispatch(setIsPlay(true));
+    console.log(playlistId);
+  };
+  const handlePlay = () => {
+    console.log(playlistId);
+    dispatch(setIsPlay(false));
   };
   return (
     <div className={cx("wrapper")}>
-      {data?.data?.map((songs) => {
+      {data?.data?.map((songs, index) => {
         return (
           <div
+            onClick={() => handleClick(songs, data?.data, songs?.encodeId)}
             className={cx(
               "inner",
               songId === songs?.encodeId && "play",
@@ -56,40 +63,12 @@ function SongItem(data) {
             )}
             key={songs?.encodeId}
           >
-            <div
-              className={cx("controls")}
-              onClick={() => handleClick(songs, data?.data, songs?.encodeId)}
-            >
-              {songId === songs?.encodeId && isPlay === false ? (
-                <span
-                  className={cx("icon")}
-                  onClick={() => dispatch(setIsPlay(true))}
-                >
-                  <PlayIcon />
-                </span>
-              ) : (
-                ""
-              )}
-              {songId === songs?.encodeId && isPlay ? (
-                <span
-                  className={cx("icon")}
-                  onClick={() => dispatch(setIsPlay(false))}
-                >
-                  <PauseIcon />
-                </span>
-              ) : (
-                ""
-              )}
-              {songId != songs?.encodeId ? (
-                <span
-                  className={cx("icon")}
-                  onClick={() => dispatch(setIsPlay(true))}
-                >
-                  <PlayIcon />
-                </span>
-              ) : (
-                ""
-              )}
+            <div className={cx("id")}>
+              <p>{index + 1}</p>
+              <img
+                className={cx("equalizer")}
+                src="https://open.spotifycdn.com/cdn/images/equaliser-green.1184ed87.svg"
+              />
             </div>
             <div className={cx("head")}>
               <img src={songs.thumbnailM} className={cx("thumb")} />
