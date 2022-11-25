@@ -25,6 +25,8 @@ import {
   RandomIcon,
 } from "../Icons";
 import styles from "./PlayBar.module.scss";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const cx = classNames.bind(styles);
 var intervalid;
@@ -55,40 +57,53 @@ function PlayBar(data) {
     };
     fetchApi();
   }, [songId]);
+  const notify = () => toast.info("Dành cho VIP");
 
   const handleNext = () => {
-    if (isRandom) {
-      dispatch(setCurrnetIndexSong(currentIndexSongRandom + 1));
-      dispatch(setSongId(playlistSong[currentIndexSongRandom]?.encodeId));
-      dispatch(setInfoSongPlayer(playlistSong[currentIndexSongRandom].title));
-      dispatch(setIsPlay(true));
+    if (
+      currentIndexSong === playlistSong.length - 1 ||
+      currentIndexSong >= playlistSong.length - 1
+    ) {
+      return;
     } else {
-      dispatch(setCurrnetIndexSong(currentIndexSong + 1));
-      dispatch(setSongId(playlistSong[currentIndexSong]?.encodeId));
-      dispatch(setInfoSongPlayer(playlistSong[currentIndexSong].title));
-      dispatch(setIsPlay(true));
+      if (playlistSong[currentIndexSong + 1]?.isWorldWide === false) {
+        notify();
+        dispatch(setIsPlay(false));
+        dispatch(setSrcAudio(""));
+        dispatch(setCurrentTime("0"));
+      }
+      if (isRandom) {
+        const randomIndex =
+          Math.round(Math.random() * playlistSong?.length) - 1;
+        dispatch(setCurrentIndexSongRandom(randomIndex));
+        dispatch(setSongId(playlistSong[currentIndexSongRandom]?.encodeId));
+        dispatch(setInfoSongPlayer(playlistSong[currentIndexSongRandom].title));
+      } else {
+        dispatch(setCurrnetIndexSong(currentIndexSong + 1));
+        dispatch(setSongId(playlistSong[currentIndexSong + 1]?.encodeId));
+        dispatch(setInfoSongPlayer(playlistSong[currentIndexSong].title));
+      }
     }
   };
   const handlePrev = () => {
+    if (playlistSong[currentIndexSong - 1]?.isWorldWide === false) {
+      notify();
+      dispatch(setIsPlay(false));
+    }
     if (isRandom) {
-      dispatch(setCurrnetIndexSong(currentIndexSongRandom - 1));
+      const randomIndex = Math.round(Math.random() * playlistSong?.length) - 1;
+      dispatch(setCurrentIndexSongRandom(randomIndex));
       dispatch(setSongId(playlistSong[currentIndexSongRandom]?.encodeId));
       dispatch(setInfoSongPlayer(playlistSong[currentIndexSongRandom].title));
-      dispatch(setIsPlay(true));
     } else {
       dispatch(setCurrnetIndexSong(currentIndexSong - 1));
-      dispatch(setSongId(playlistSong[currentIndexSong]?.encodeId));
+      dispatch(setSongId(playlistSong[currentIndexSong - 1]?.encodeId));
       dispatch(setInfoSongPlayer(playlistSong[currentIndexSong].title));
-      dispatch(setIsPlay(true));
     }
   };
   const handleShuffle = () => {
-    const randomIndex = Math.round(Math.random() * playlistSong?.length) - 1;
-    dispatch(setCurrentIndexSongRandom(randomIndex));
-    console.log(currentIndexSongRandom);
-    dispatch(setSongId(playlistSong[currentIndexSongRandom]?.encodeId));
-    dispatch(setInfoSongPlayer(playlistSong[currentIndexSongRandom].title));
     dispatch(setRandom(true));
+
     // dispatch(setIsPlay(true));
   };
   const handlePlay = () => {
@@ -111,7 +126,9 @@ function PlayBar(data) {
   useEffect(() => {
     if (isPlay) {
       intervalid = setInterval(() => {
-        dispatch(setCurrentTime(Math.round(audioRef.current.currentTime)));
+        dispatch(
+          setCurrentTime(Math.round(audioRef.current.currentTime) || "00:00")
+        );
       }, 1000);
     } else {
       intervalid && clearInterval(intervalid);
@@ -122,7 +139,7 @@ function PlayBar(data) {
     audioRef.current.currentTime = value;
   };
   useEffect(() => {
-    document.title = playlistSong[currentIndexSong].title;
+    document.title = playlistSong[currentIndexSong]?.title;
   });
   useEffect(() => {
     if (isPlay) {
@@ -141,8 +158,8 @@ function PlayBar(data) {
             alt={playlistSong[currentIndexSong]?.alias}
           />
           <div className={cx("item")}>
-            <p>{playlistSong[currentIndexSong].title}</p>
-            <span>{playlistSong[currentIndexSong].artistsNames}</span>
+            <p>{playlistSong[currentIndexSong]?.title}</p>
+            <span>{playlistSong[currentIndexSong]?.artistsNames}</span>
           </div>
         </div>
         <div className={cx("body")}>
@@ -196,6 +213,18 @@ function PlayBar(data) {
               </span>
             </Tippy>
             <audio ref={audioRef} src={srcAudio} />
+            <ToastContainer
+              position="top-right"
+              autoClose={1000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="dark"
+            />
           </div>
           <div className={cx("bottom")}>
             <span className={cx("time")}>
@@ -214,25 +243,26 @@ function PlayBar(data) {
                 className={cx("progress")}
                 value={currentTime}
                 min={0}
-                max={playlistSong[currentIndexSong].duration}
+                max={playlistSong[currentIndexSong]?.duration}
               />
               <div
                 className={cx("track")}
                 style={{
-                  width: ` ${currentTime / 2.6}%`,
+                  width: ` ${currentTime / 2.7}%`,
                 }}
               ></div>
             </div>
 
             <span className={cx("time")}>
               {" "}
-              {Math.floor(playlistSong[currentIndexSong].duration / 60) < 10
-                ? "0" + Math.floor(playlistSong[currentIndexSong].duration / 60)
-                : Math.floor(playlistSong[currentIndexSong].duration / 60)}
+              {Math.floor(playlistSong[currentIndexSong]?.duration / 60) < 10
+                ? "0" +
+                  Math.floor(playlistSong[currentIndexSong]?.duration / 60)
+                : Math.floor(playlistSong[currentIndexSong]?.duration / 60)}
               :
-              {playlistSong[currentIndexSong].duration % 60 < 10
-                ? "0" + (playlistSong[currentIndexSong].duration % 60)
-                : playlistSong[currentIndexSong].duration % 60}
+              {playlistSong[currentIndexSong]?.duration % 60 < 10
+                ? "0" + (playlistSong[currentIndexSong]?.duration % 60)
+                : playlistSong[currentIndexSong]?.duration % 60}
             </span>
           </div>
         </div>

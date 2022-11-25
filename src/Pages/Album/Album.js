@@ -1,11 +1,10 @@
 import classNames from "classnames/bind";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router";
 import SongItem from "~/Component/SongItem";
-import styles from "./Album.module.scss";
 import * as playListServices from "~/Services/playListServices";
-import { useDispatch } from "react-redux";
-import { setPlaylistId } from "~/Redux/audioSlice";
+import styles from "./Album.module.scss";
 
 const cx = classNames.bind(styles);
 
@@ -14,6 +13,7 @@ function Album() {
   const data = location.pathname;
 
   const dispatch = useDispatch();
+  const playlistId = useSelector((state) => state.audio.playlistId);
 
   const [playList, setPlayList] = useState([]);
   // useEffect(() => {

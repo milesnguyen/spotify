@@ -98,6 +98,10 @@
     left: unset;
     border-radius: 8px;
     // transform: translateX(-100% + 33.3333%);
+
+    &:hover {
+      background-color: var(--primary);
+    }
   }
 }
 .progress {
@@ -110,23 +114,16 @@
 
   &::-webkit-slider-thumb {
     z-index: 999;
+    width: 14px !important;
+    height: 14px !important;
     -webkit-appearance: none;
     appearance: none;
+    background: #fff;
+    border-radius: 50%;
   }
 
   &:hover ~ .track {
     background-color: var(--primary);
-  }
-
-  &:hover {
-    &::-webkit-slider-thumb {
-      width: 14px !important;
-      height: 14px !important;
-      -webkit-appearance: none;
-      appearance: none;
-      background: #fff;
-      border-radius: 50%;
-    }
   }
 }
 .time {

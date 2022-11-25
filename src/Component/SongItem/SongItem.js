@@ -1,5 +1,6 @@
 import classNames from "classnames/bind";
 import { useDispatch, useSelector } from "react-redux";
+
 import {
   setCurrentTime,
   setCurrnetIndexSong,
@@ -7,19 +8,13 @@ import {
   setIsPlay,
   setPlaylistSong,
   setSongId,
-  setSrcAudio,
 } from "~/Redux/audioSlice";
-import { PauseIcon, PlayIcon } from "../Icons";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 import styles from "./SongItem.module.scss";
 
 const cx = classNames.bind(styles);
 
 function SongItem(data) {
-  const notify = () => toast.info("Dành cho VIP");
-
   const songId = useSelector((state) => state.audio.songId);
   const playlistId = useSelector((state) => state.audio.playlistId);
   const currentIndexSong = useSelector((state) => state.audio.currentIndexSong);
@@ -42,7 +37,6 @@ function SongItem(data) {
       dispatch(setCurrnetIndexSong(currentSongs));
     }
   };
-
   const handlePause = () => {
     console.log(playlistId);
   };
@@ -82,19 +76,6 @@ function SongItem(data) {
               ) : (
                 <span></span>
               )}
-
-              <ToastContainer
-                position="top-right"
-                autoClose={1000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="dark"
-              />
             </div>
             <div className={cx("album")}>
               <span>{songs?.album?.title}</span>
