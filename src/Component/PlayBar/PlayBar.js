@@ -12,6 +12,7 @@ import {
   setRandom,
   setSongId,
   setSrcAudio,
+  setIsVip,
 } from "~/Redux/audioSlice";
 import * as songServices from "~/Services/songServices";
 import {
@@ -38,6 +39,7 @@ function PlayBar(data) {
   const playlistSong = useSelector((state) => state.audio.playlistSong);
   const currentIndexSong = useSelector((state) => state.audio.currentIndexSong);
   const isPlay = useSelector((state) => state.audio.isPlay);
+  const isVip = useSelector((state) => state.audio.isPlay);
   const isRandom = useSelector((state) => state.audio.isRandom);
   const currentTime = useSelector((state) => state.audio.currentTime);
   const currentIndexSongRandom = useSelector(
@@ -49,40 +51,36 @@ function PlayBar(data) {
   const [isPlaying, setIsPlaying] = useState();
   const audioRef = useRef();
   const volumeRef = useRef();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchApi = async () => {
       const data = await songServices.songs(songId);
       dispatch(setSrcAudio(data[128]));
+      setIsLoading(false);
     };
     fetchApi();
   }, [songId]);
   const notify = () => toast.info("Dành cho VIP");
 
   const handleNext = () => {
-    if (
-      currentIndexSong === playlistSong.length - 1 ||
-      currentIndexSong >= playlistSong.length - 1
-    ) {
-      return;
+    if (playlistSong[currentIndexSong + 1]?.isWorldWide === false) {
+      notify();
+      dispatch(setIsVip(true));
+      dispatch(setIsPlay(false));
+      dispatch(setSrcAudio(""));
+      dispatch(setCurrentTime(0));
+      audioRef.current.currentTime = 0;
+      dispatch(setCurrnetIndexSong(currentIndexSong + 1));
+    } else if (isRandom) {
+      const randomIndex = Math.round(Math.random() * playlistSong?.length) - 1;
+      dispatch(setCurrentIndexSongRandom(randomIndex));
+      dispatch(setSongId(playlistSong[currentIndexSongRandom]?.encodeId));
+      dispatch(setInfoSongPlayer(playlistSong[currentIndexSongRandom].title));
     } else {
-      if (playlistSong[currentIndexSong + 1]?.isWorldWide === false) {
-        notify();
-        dispatch(setIsPlay(false));
-        dispatch(setSrcAudio(""));
-        dispatch(setCurrentTime("0"));
-      }
-      if (isRandom) {
-        const randomIndex =
-          Math.round(Math.random() * playlistSong?.length) - 1;
-        dispatch(setCurrentIndexSongRandom(randomIndex));
-        dispatch(setSongId(playlistSong[currentIndexSongRandom]?.encodeId));
-        dispatch(setInfoSongPlayer(playlistSong[currentIndexSongRandom].title));
-      } else {
-        dispatch(setCurrnetIndexSong(currentIndexSong + 1));
-        dispatch(setSongId(playlistSong[currentIndexSong + 1]?.encodeId));
-        dispatch(setInfoSongPlayer(playlistSong[currentIndexSong].title));
-      }
+      dispatch(setCurrnetIndexSong(currentIndexSong + 1));
+      dispatch(setSongId(playlistSong[currentIndexSong + 1]?.encodeId));
+      dispatch(setInfoSongPlayer(playlistSong[currentIndexSong].title));
     }
   };
   const handlePrev = () => {
@@ -126,9 +124,7 @@ function PlayBar(data) {
   useEffect(() => {
     if (isPlay) {
       intervalid = setInterval(() => {
-        dispatch(
-          setCurrentTime(Math.round(audioRef.current.currentTime) || "00:00")
-        );
+        dispatch(setCurrentTime(Math.round(audioRef.current.currentTime)));
       }, 1000);
     } else {
       intervalid && clearInterval(intervalid);
@@ -188,19 +184,22 @@ function PlayBar(data) {
                 <PrevIcon />
               </span>
             </Tippy>
-            {isPlay ? (
-              <Tippy content={"Pause"}>
-                <span className={cx("pause")} onClick={handlePause}>
-                  <PauseIcon />
-                </span>
-              </Tippy>
-            ) : (
-              <Tippy content={"play"}>
-                <span className={cx("play")} onClick={handlePlay}>
-                  <PlayIcon />
-                </span>
-              </Tippy>
-            )}
+
+            <div>
+              {isPlay ? (
+                <Tippy content={"Pause"}>
+                  <span className={cx("pause")} onClick={handlePause}>
+                    <PauseIcon />
+                  </span>
+                </Tippy>
+              ) : (
+                <Tippy content={"play"}>
+                  <span className={cx("play")} onClick={handlePlay}>
+                    <PlayIcon />
+                  </span>
+                </Tippy>
+              )}
+            </div>
 
             <Tippy content={"Next"}>
               <span onClick={handleNext}>
@@ -227,15 +226,20 @@ function PlayBar(data) {
             />
           </div>
           <div className={cx("bottom")}>
-            <span className={cx("time")}>
-              {Math.floor(currentTime / 60) < 10
-                ? "0" + Math.floor(currentTime / 60)
-                : Math.floor(currentTime / 60)}
-              :
-              {currentTime % 60 < 10
-                ? "0" + (currentTime % 60)
-                : currentTime % 60}
-            </span>
+            {!isLoading ? (
+              <span className={cx("time")}>
+                {Math.floor(currentTime / 60) < 10
+                  ? "0" + Math.floor(currentTime / 60)
+                  : Math.floor(currentTime / 60)}
+                :
+                {currentTime % 60 < 10
+                  ? "0" + (currentTime % 60)
+                  : currentTime % 60}
+              </span>
+            ) : (
+              <span className={cx("time")}>00:00</span>
+            )}
+
             <div className={cx("range")}>
               <input
                 onChange={(e) => handleChangeProgressSong(e.target.value)}

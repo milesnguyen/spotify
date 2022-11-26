@@ -1,17 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   isPlay: false,
+  isVip: false,
   isRadioPlay: false,
   isMute: false,
   songId: localStorage.getItem("songId") || "",
   playlistId: localStorage.getItem("playlistId") || "",
   currentIndexSong: 0,
   currentIndexSongRandom: 0,
-  // infoSongPlayer: JSON.parse(localStorage.getItem("songInfo")) || {
-  //   title: "Tên bài hát",
-  //   artistsNames: "artistsNames",
-  //   duration: 0,
-  // },
+
   infoSongPlayer: localStorage.getItem("songInfo") || "",
   srcAudio: "",
   srcRadio: "",
@@ -33,6 +30,9 @@ export const audioSlice = createSlice({
   reducers: {
     setIsPlay: (state, action) => {
       state.isPlay = action.payload;
+    },
+    setIsVip: (state, action) => {
+      state.isVip = action.payload;
     },
     setIsRadioPlay: (state, action) => {
       state.isRadioPlay = action.payload;
@@ -104,6 +104,7 @@ export const audioSlice = createSlice({
 
 export const {
   setIsPlay,
+  setIsVip,
   changeIconVolume,
   setSongId,
   setInfoSongPlayer,
