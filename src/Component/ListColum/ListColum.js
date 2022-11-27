@@ -17,7 +17,6 @@ function ListColum(data) {
 
   const handleClickPlay = (list) => {
     dispatch(setPlaylistId(list?.encodeId));
-
     if (playlistId === list?.encodeId) {
       dispatch(setIsPlay(true));
     }

@@ -56,8 +56,11 @@ function PlayBar(data) {
   useEffect(() => {
     const fetchApi = async () => {
       const data = await songServices.songs(songId);
-      dispatch(setSrcAudio(data[128]));
-      setIsLoading(false);
+      if (data) {
+        dispatch(setSrcAudio(data[128]));
+      } else {
+        dispatch(setIsPlay(false));
+      }
     };
     fetchApi();
   }, [songId]);
@@ -66,21 +69,31 @@ function PlayBar(data) {
   const handleNext = () => {
     if (playlistSong[currentIndexSong + 1]?.isWorldWide === false) {
       notify();
-      dispatch(setIsVip(true));
-      dispatch(setIsPlay(false));
       dispatch(setSrcAudio(""));
-      dispatch(setCurrentTime(0));
-      audioRef.current.currentTime = 0;
-      dispatch(setCurrnetIndexSong(currentIndexSong + 1));
-    } else if (isRandom) {
-      const randomIndex = Math.round(Math.random() * playlistSong?.length) - 1;
-      dispatch(setCurrentIndexSongRandom(randomIndex));
-      dispatch(setSongId(playlistSong[currentIndexSongRandom]?.encodeId));
-      dispatch(setInfoSongPlayer(playlistSong[currentIndexSongRandom].title));
-    } else {
       dispatch(setCurrnetIndexSong(currentIndexSong + 1));
       dispatch(setSongId(playlistSong[currentIndexSong + 1]?.encodeId));
       dispatch(setInfoSongPlayer(playlistSong[currentIndexSong].title));
+      dispatch(setIsPlay(false));
+      return;
+    } else {
+      dispatch(setSrcAudio(""));
+      dispatch(setCurrentTime(0));
+      audioRef.current.currentTime = 0;
+      if (isRandom) {
+        const randomIndex =
+          Math.round(Math.random() * playlistSong?.length) - 1;
+        dispatch(setCurrentIndexSongRandom(randomIndex));
+        dispatch(setSongId(playlistSong[currentIndexSongRandom]?.encodeId));
+        dispatch(
+          setInfoSongPlayer(playlistSong[currentIndexSongRandom]?.title)
+        );
+        console.log(infoSongPlayer);
+        console.log(playlistSong[currentIndexSongRandom]?.title);
+      } else {
+        dispatch(setCurrnetIndexSong(currentIndexSong + 1));
+        dispatch(setSongId(playlistSong[currentIndexSong + 1]?.encodeId));
+        dispatch(setInfoSongPlayer(playlistSong[currentIndexSong].title));
+      }
     }
   };
   const handlePrev = () => {
@@ -100,9 +113,12 @@ function PlayBar(data) {
     }
   };
   const handleShuffle = () => {
-    dispatch(setRandom(true));
-
-    // dispatch(setIsPlay(true));
+    if (isRandom) {
+      dispatch(setRandom(false));
+    } else {
+      dispatch(setCurrentIndexSongRandom(-1));
+      dispatch(setRandom(true));
+    }
   };
   const handlePlay = () => {
     if (isPlay) {
@@ -194,7 +210,14 @@ function PlayBar(data) {
                 </Tippy>
               ) : (
                 <Tippy content={"play"}>
-                  <span className={cx("play")} onClick={handlePlay}>
+                  <span
+                    className={cx(
+                      "play",
+                      playlistSong[currentIndexSong]?.isWorldWide === false &&
+                        "play-vip"
+                    )}
+                    onClick={handlePlay}
+                  >
                     <PlayIcon />
                   </span>
                 </Tippy>

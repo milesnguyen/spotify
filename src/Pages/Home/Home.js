@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import ListColum from "~/Component/ListColum";
 import styles from "./Home.module.scss";
 import * as homeServices from "~/Services/homeServices";
+import MusicCard from "~/Component/MusicCard";
 
 const cx = classNames.bind(styles);
 
@@ -27,6 +28,10 @@ function Home() {
       {[Tracks].map((track, index) => {
         return <ListColum key={index} data={track} />;
       })}
+      <MusicCard />
+      <MusicCard />
+      <MusicCard />
+      <MusicCard />
     </div>
   );
 }

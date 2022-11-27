@@ -76,6 +76,10 @@
       color: var(--black);
     }
   }
+  .play-vip {
+    opacity: 80%;
+    pointer-events: none;
+  }
 }
 .bottom {
   width: 100%;
