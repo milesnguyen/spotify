@@ -7,6 +7,7 @@ import {
   setCurrnetIndexSong,
   setInfoSongPlayer,
   setIsPlay,
+  setPlaylistId,
   setPlaylistSong,
   setSongId,
 } from "~/Redux/audioSlice";
@@ -26,9 +27,10 @@ function SongItem(data) {
 
   const handleClick = (info, song, id) => {
     dispatch(setSongId(id));
+    // dispatch(setPlaylistId(plays?.encodeId));
     dispatch(setInfoSongPlayer(info));
     dispatch(setPlaylistSong(song));
-    dispatch(setCurrentTime(0));
+
     dispatch(setIsPlay(true));
     if (playlistSong) {
       let currentSongs;
@@ -55,7 +57,7 @@ function SongItem(data) {
               <p>{index + 1}</p>
               <img
                 className={cx("equalizer")}
-                src="https://open.spotifycdn.com/cdn/images/equaliser-green.1184ed87.svg"
+                src="https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/icons/icon-playing.gif"
               />
             </div>
             <div className={cx("head")}>

@@ -21,7 +21,6 @@ function ListColum(data) {
       dispatch(setIsPlay(true));
     }
   };
-
   return (
     <div className={cx("wrapper")}>
       {[data.data].map((track, index) => {
@@ -29,7 +28,11 @@ function ListColum(data) {
           <div className={cx("inner")} key={index}>
             {track.map((list) => {
               return (
-                <div className={cx("item")} key={list.encodeId}>
+                <Link
+                  key={list.encodeId}
+                  className={cx("item")}
+                  to={`/id=${list.encodeId}`}
+                >
                   <img
                     className={cx("img")}
                     src={list.thumbnail}
@@ -39,21 +42,8 @@ function ListColum(data) {
                     <div className={cx("text")}>
                       <span>{list.title}</span>
                     </div>
-                    <div className={cx("controls")}>
-                      {!isPlaying ? (
-                        <Link to={`/id=${list.encodeId}`}>
-                          <Button circle onClick={() => handleClickPlay(list)}>
-                            <PlayIcon />
-                          </Button>
-                        </Link>
-                      ) : (
-                        <Button circle>
-                          <PauseIcon />
-                        </Button>
-                      )}
-                    </div>
                   </div>
-                </div>
+                </Link>
               );
             })}
           </div>

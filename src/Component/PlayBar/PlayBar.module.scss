@@ -117,6 +117,7 @@
   background-color: #5e5e5e;
 
   &::-webkit-slider-thumb {
+    opacity: 0;
     z-index: 999;
     width: 14px !important;
     height: 14px !important;

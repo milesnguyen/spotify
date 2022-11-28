@@ -67,32 +67,34 @@ function PlayBar(data) {
   const notify = () => toast.info("Dành cho VIP");
 
   const handleNext = () => {
-    if (playlistSong[currentIndexSong + 1]?.isWorldWide === false) {
-      notify();
-      dispatch(setSrcAudio(""));
+    if (isRandom) {
+      const randomIndex = Math.round(Math.random() * playlistSong?.length) - 1;
+      dispatch(setIsPlay(true));
+      dispatch(setCurrentIndexSongRandom(randomIndex));
+      dispatch(setSongId(playlistSong[currentIndexSongRandom]?.encodeId));
+      dispatch(setInfoSongPlayer(playlistSong[currentIndexSongRandom]?.title));
+      if (playlistSong[currentIndexSongRandom + 1]?.isWorldWide === false) {
+        notify();
+        dispatch(setSrcAudio(""));
+        dispatch(setCurrnetIndexSong(currentIndexSongRandom + 1));
+        dispatch(setSongId(playlistSong[currentIndexSongRandom + 1]?.encodeId));
+        dispatch(setInfoSongPlayer(playlistSong[currentIndexSongRandom].title));
+        dispatch(setIsPlay(false));
+        return;
+      }
+    } else {
+      dispatch(setIsPlay(true));
       dispatch(setCurrnetIndexSong(currentIndexSong + 1));
       dispatch(setSongId(playlistSong[currentIndexSong + 1]?.encodeId));
       dispatch(setInfoSongPlayer(playlistSong[currentIndexSong].title));
-      dispatch(setIsPlay(false));
-      return;
-    } else {
-      dispatch(setSrcAudio(""));
-      dispatch(setCurrentTime(0));
-      audioRef.current.currentTime = 0;
-      if (isRandom) {
-        const randomIndex =
-          Math.round(Math.random() * playlistSong?.length) - 1;
-        dispatch(setCurrentIndexSongRandom(randomIndex));
-        dispatch(setSongId(playlistSong[currentIndexSongRandom]?.encodeId));
-        dispatch(
-          setInfoSongPlayer(playlistSong[currentIndexSongRandom]?.title)
-        );
-        console.log(infoSongPlayer);
-        console.log(playlistSong[currentIndexSongRandom]?.title);
-      } else {
+      if (playlistSong[currentIndexSong + 1]?.isWorldWide === false) {
+        notify();
+        dispatch(setSrcAudio(""));
         dispatch(setCurrnetIndexSong(currentIndexSong + 1));
         dispatch(setSongId(playlistSong[currentIndexSong + 1]?.encodeId));
         dispatch(setInfoSongPlayer(playlistSong[currentIndexSong].title));
+        dispatch(setIsPlay(false));
+        return;
       }
     }
   };
@@ -249,20 +251,15 @@ function PlayBar(data) {
             />
           </div>
           <div className={cx("bottom")}>
-            {!isLoading ? (
-              <span className={cx("time")}>
-                {Math.floor(currentTime / 60) < 10
-                  ? "0" + Math.floor(currentTime / 60)
-                  : Math.floor(currentTime / 60)}
-                :
-                {currentTime % 60 < 10
-                  ? "0" + (currentTime % 60)
-                  : currentTime % 60}
-              </span>
-            ) : (
-              <span className={cx("time")}>00:00</span>
-            )}
-
+            <span className={cx("time")}>
+              {Math.floor(currentTime / 60) < 10
+                ? "0" + Math.floor(currentTime / 60)
+                : Math.floor(currentTime / 60)}
+              :
+              {currentTime % 60 < 10
+                ? "0" + (currentTime % 60)
+                : currentTime % 60}
+            </span>
             <div className={cx("range")}>
               <input
                 onChange={(e) => handleChangeProgressSong(e.target.value)}
@@ -275,7 +272,7 @@ function PlayBar(data) {
               <div
                 className={cx("track")}
                 style={{
-                  width: ` ${currentTime / 2.7}%`,
+                  width: ` ${currentTime / 2}%`,
                 }}
               ></div>
             </div>

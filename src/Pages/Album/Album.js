@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router";
 import SongItem from "~/Component/SongItem";
+import { setPlaylistId } from "~/Redux/audioSlice";
 import * as playListServices from "~/Services/playListServices";
 import styles from "./Album.module.scss";
 
@@ -16,13 +17,6 @@ function Album() {
   const playlistId = useSelector((state) => state.audio.playlistId);
 
   const [playList, setPlayList] = useState([]);
-  // useEffect(() => {
-  //   fetch(
-  //     `https://apizingmp3.herokuapp.com/api/detailplaylist?id=${data.slice(4)}`
-  //   )
-  //     .then((response) => response.json())
-  //     .then((json) => setPlayList(json.data));
-  // });
 
   useEffect(() => {
     const fetchApi = async () => {
@@ -31,7 +25,9 @@ function Album() {
     };
     fetchApi();
   }, [data]);
-
+  useEffect(() => {
+    dispatch(setPlaylistId(playList));
+  });
   return (
     <div className={cx("wrapper")}>
       <header className={cx("top")}>
@@ -54,7 +50,7 @@ function Album() {
           <span>time</span>
         </div>
         {[playList?.song?.items].map((songs, index) => {
-          return <SongItem data={songs} key={index} />;
+          return <SongItem data={songs} key={index} plays={playList} />;
         })}
       </div>
     </div>
