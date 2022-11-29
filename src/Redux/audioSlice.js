@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   isPlay: false,
-  isVip: false,
+
   isRadioPlay: false,
   isMute: false,
   songId: localStorage.getItem("songId") || "",
@@ -31,8 +31,8 @@ export const audioSlice = createSlice({
     setIsPlay: (state, action) => {
       state.isPlay = action.payload;
     },
-    setIsVip: (state, action) => {
-      state.isVip = action.payload;
+    SetIsMute: (state, action) => {
+      state.isMute = action.payload;
     },
     setIsRadioPlay: (state, action) => {
       state.isRadioPlay = action.payload;
@@ -104,7 +104,7 @@ export const audioSlice = createSlice({
 
 export const {
   setIsPlay,
-  setIsVip,
+  SetIsMute,
   changeIconVolume,
   setSongId,
   setInfoSongPlayer,

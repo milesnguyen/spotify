@@ -3,21 +3,29 @@ import classNames from "classnames/bind";
 import { useEffect, useRef, useState } from "react";
 import "react-h5-audio-player/lib/styles.css";
 import { useDispatch, useSelector } from "react-redux";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import {
   setCurrentIndexSongRandom,
   setCurrentTime,
   setCurrnetIndexSong,
   setInfoSongPlayer,
+  SetIsMute,
   setIsPlay,
+  setLoop,
   setRandom,
   setSongId,
   setSrcAudio,
-  setIsVip,
+  setVolume,
 } from "~/Redux/audioSlice";
 import * as songServices from "~/Services/songServices";
 import {
   AudioIcon,
+  AudioIcon0,
+  AudioIcon1,
+  LoopActiceIcon,
   LoopIcon,
+  MuteIcon,
   NextIcon,
   PauseIcon,
   PlayIcon,
@@ -26,8 +34,6 @@ import {
   RandomIcon,
 } from "../Icons";
 import styles from "./PlayBar.module.scss";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 const cx = classNames.bind(styles);
 var intervalid;
@@ -39,7 +45,9 @@ function PlayBar(data) {
   const playlistSong = useSelector((state) => state.audio.playlistSong);
   const currentIndexSong = useSelector((state) => state.audio.currentIndexSong);
   const isPlay = useSelector((state) => state.audio.isPlay);
-  const isVip = useSelector((state) => state.audio.isPlay);
+  const isMute = useSelector((state) => state.audio.isMute);
+  const isLoop = useSelector((state) => state.audio.isLoop);
+  const volume = useSelector((state) => state.audio.volume);
   const isRandom = useSelector((state) => state.audio.isRandom);
   const currentTime = useSelector((state) => state.audio.currentTime);
   const currentIndexSongRandom = useSelector(
@@ -102,12 +110,6 @@ function PlayBar(data) {
     if (playlistSong[currentIndexSong - 1]?.isWorldWide === false) {
       notify();
       dispatch(setIsPlay(false));
-    }
-    if (isRandom) {
-      const randomIndex = Math.round(Math.random() * playlistSong?.length) - 1;
-      dispatch(setCurrentIndexSongRandom(randomIndex));
-      dispatch(setSongId(playlistSong[currentIndexSongRandom]?.encodeId));
-      dispatch(setInfoSongPlayer(playlistSong[currentIndexSongRandom].title));
     } else {
       dispatch(setCurrnetIndexSong(currentIndexSong - 1));
       dispatch(setSongId(playlistSong[currentIndexSong - 1]?.encodeId));
@@ -139,6 +141,22 @@ function PlayBar(data) {
     audioRef.current.pause();
     dispatch(setIsPlay(false));
   };
+  const handleMute = () => {
+    dispatch(SetIsMute(true));
+    dispatch(setVolume(0));
+    audioRef.current.volume = 0;
+  };
+  const handleUnMute = () => {
+    dispatch(SetIsMute(false));
+    if (volume === 0) {
+      dispatch(setVolume(50));
+      audioRef.current.volume = 50 / 100;
+    }
+  };
+  const handleChange = (e) => {
+    dispatch(setVolume(e.target.value));
+    audioRef.current.volume = e.target.value / 100;
+  };
   useEffect(() => {
     if (isPlay) {
       intervalid = setInterval(() => {
@@ -162,6 +180,7 @@ function PlayBar(data) {
       audioRef.current.pause();
     }
   });
+
   return (
     <div className={cx("wrapper")}>
       <div className={cx("inner")}>
@@ -197,8 +216,9 @@ function PlayBar(data) {
                 </Tippy>
               )}
             </span>
+
             <Tippy content={"Previous"}>
-              <span onClick={handlePrev}>
+              <span onClick={handlePrev} className={cx(isRandom && "random")}>
                 <PrevIcon />
               </span>
             </Tippy>
@@ -231,12 +251,26 @@ function PlayBar(data) {
                 <NextIcon />
               </span>
             </Tippy>
-            <Tippy content={"Enable Repeat"}>
-              <span>
-                <LoopIcon />
-              </span>
-            </Tippy>
-            <audio ref={audioRef} src={srcAudio} />
+            {isLoop ? (
+              <Tippy content={"Disable Repeat"}>
+                <span onClick={() => dispatch(setLoop(false))}>
+                  <LoopActiceIcon />
+                </span>
+              </Tippy>
+            ) : (
+              <Tippy content={"Enable Repeat"}>
+                <span onClick={() => dispatch(setLoop(true))}>
+                  <LoopIcon />
+                </span>
+              </Tippy>
+            )}
+
+            <audio
+              ref={audioRef}
+              src={srcAudio}
+              loop={isLoop}
+              onEnded={handleNext}
+            />
             <ToastContainer
               position="top-right"
               autoClose={1000}
@@ -267,18 +301,15 @@ function PlayBar(data) {
                 className={cx("progress")}
                 value={currentTime}
                 min={0}
-                max={playlistSong[currentIndexSong]?.duration}
+                max={
+                  isRandom
+                    ? playlistSong[currentIndexSong]?.duration
+                    : playlistSong[currentIndexSongRandom]?.duration
+                }
               />
-              <div
-                className={cx("track")}
-                style={{
-                  width: ` ${currentTime / 2}%`,
-                }}
-              ></div>
             </div>
 
             <span className={cx("time")}>
-              {" "}
               {Math.floor(playlistSong[currentIndexSong]?.duration / 60) < 10
                 ? "0" +
                   Math.floor(playlistSong[currentIndexSong]?.duration / 60)
@@ -291,8 +322,31 @@ function PlayBar(data) {
           </div>
         </div>
         <div className={cx("footer")}>
-          <AudioIcon className={cx("icon")} />
-          <input type="range" className={cx("progress")} min={0} max="100" />
+          {!isMute ? (
+            <span onClick={handleMute}>
+              {volume >= 60 ? (
+                <AudioIcon className={cx("icon")} />
+              ) : volume >= 30 ? (
+                <AudioIcon1 className={cx("icon")} />
+              ) : (
+                <AudioIcon0 className={cx("icon")} />
+              )}
+            </span>
+          ) : (
+            <span onClick={handleUnMute}>
+              <MuteIcon className={cx("icon")} />
+            </span>
+          )}
+
+          <span className={cx("volume")}>
+            <input
+              onChange={handleChange}
+              type="range"
+              value={volume}
+              min={0}
+              max="100"
+            />
+          </span>
         </div>
       </div>
     </div>
