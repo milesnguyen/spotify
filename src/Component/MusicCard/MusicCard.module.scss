@@ -13,8 +13,9 @@
   gap: 24px;
 }
 .card {
-  width: 16%;
+  width: 20%;
   min-height: 274px;
+  text-decoration: none;
   padding: 16px;
   border-radius: 8px;
   background-color: #181818;
@@ -25,15 +26,19 @@
   }
 }
 .head {
+  width: 100%;
+
   img {
-    width: 152px;
-    height: 152px;
+    width: 100%;
+
     object-fit: cover;
     margin-bottom: 16px;
     border-radius: 6px;
   }
 }
 .body {
+  text-decoration: none !important;
+
   p {
     font-size: 1.4rem;
     line-height: 1.8rem;
@@ -47,6 +52,7 @@
 }
 .text {
   max-width: 100%;
+  color: var(--white);
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 1;
   display: -webkit-box;

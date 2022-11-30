@@ -9,6 +9,7 @@ const cx = classNames.bind(styles);
 
 function Home() {
   const [Tracks, setTracks] = useState([]);
+  const [Pages, setPages] = useState([]);
 
   // useEffect(() => {
   //   fetch("https://apizingmp3.herokuapp.com/api/home?page=1")
@@ -18,8 +19,15 @@ function Home() {
 
   useEffect(() => {
     const fetchApi = async () => {
-      const data = await homeServices.home();
+      const data = await homeServices.home(1);
       setTracks(data?.items[4]?.items);
+    };
+    fetchApi();
+  });
+  useEffect(() => {
+    const fetchApi = async () => {
+      const page = await homeServices.home(2);
+      setPages(page.items[0].items);
     };
     fetchApi();
   });
@@ -28,10 +36,7 @@ function Home() {
       {[Tracks].map((track, index) => {
         return <ListColum key={index} data={track} />;
       })}
-      <MusicCard />
-      <MusicCard />
-      <MusicCard />
-      <MusicCard />
+      <MusicCard data={Pages} />
     </div>
   );
 }
