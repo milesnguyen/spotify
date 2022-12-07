@@ -26,8 +26,8 @@ function Home() {
   });
   useEffect(() => {
     const fetchApi = async () => {
-      const page = await homeServices.home(2);
-      setPages(page.items[0].items);
+      const page = await homeServices.home(3);
+      setPages(page?.items[5]?.items);
     };
     fetchApi();
   });
@@ -36,7 +36,9 @@ function Home() {
       {[Tracks].map((track, index) => {
         return <ListColum key={index} data={track} />;
       })}
-      <MusicCard data={Pages} />
+      {[Pages].map((list) => {
+        return <MusicCard data={list} />;
+      })}
     </div>
   );
 }

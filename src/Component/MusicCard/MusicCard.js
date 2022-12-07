@@ -1,31 +1,36 @@
 import classNames from "classnames/bind";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "./MusicCard.module.scss";
 
 const cx = classNames.bind(styles);
 
 function MusicCard(data) {
-  console.log(data);
   return (
     <div className={cx("wrapper")}>
       <h2 className={cx("title")}>Nhạc Mới Mỗi Ngày</h2>
-      <div>
+      <div className={cx("inner")}>
+        {[data].map((item, index) => {
+          console.log(item);
+        })}
+      </div>
+      {/* <div>
         {[data?.data].map((item, index) => {
           return (
             <div className={cx("inner")} key={index}>
-              {item.map((list) => {
+              {[item].map((list) => {
                 return (
                   <Link
-                    to={`/id=${list.encodeId}`}
+                    to={`/id=${list?.encodeId}`}
                     className={cx("card")}
-                    key={list.encodeId}
+                    key={list?.encodeId}
                   >
                     <div className={cx("head")}>
-                      <img src={list?.thumbnail} alt={list.encodeId} />
+                      <img src={list?.thumbnail} alt={list?.encodeId} />
                     </div>
                     <div className={cx("body")}>
                       <h1 className={cx("text")}>{list?.title}</h1>
-                      <p>{list.sortDescription}</p>
+                      <p>{list?.sortDescription}</p>
                     </div>
                   </Link>
                 );
@@ -33,7 +38,7 @@ function MusicCard(data) {
             </div>
           );
         })}
-      </div>
+      </div> */}
     </div>
   );
 }

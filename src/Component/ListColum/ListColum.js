@@ -23,24 +23,24 @@ function ListColum(data) {
   };
   return (
     <div className={cx("wrapper")}>
-      {[data.data].map((track, index) => {
+      {[data?.data].map((track, index) => {
         return (
           <div className={cx("inner")} key={index}>
             {track.map((list) => {
               return (
                 <Link
-                  key={list.encodeId}
+                  key={list?.encodeId}
                   className={cx("item")}
-                  to={`/id=${list.encodeId}`}
+                  to={`/id=${list?.encodeId}`}
                 >
                   <img
                     className={cx("img")}
-                    src={list.thumbnail}
-                    alt={list.title}
+                    src={list?.thumbnail}
+                    alt={list?.title}
                   />
                   <div className={cx("desc")}>
                     <div className={cx("text")}>
-                      <span>{list.title}</span>
+                      <span>{list?.title}</span>
                     </div>
                   </div>
                 </Link>
