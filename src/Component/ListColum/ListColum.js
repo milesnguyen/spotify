@@ -12,7 +12,7 @@ const cx = classNames.bind(styles);
 function ListColum(data) {
   const dispatch = useDispatch();
   const playlistId = useSelector((state) => state.audio.playlistId);
-
+  const [Data, setData] = useState([]);
   const [isPlaying, setIsPlaying] = useState(false);
 
   const handleClickPlay = (list) => {

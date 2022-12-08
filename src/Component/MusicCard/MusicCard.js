@@ -9,11 +9,11 @@ function MusicCard(data) {
   return (
     <div className={cx("wrapper")}>
       <h2 className={cx("title")}>Nhạc Mới Mỗi Ngày</h2>
-      <div className={cx("inner")}>
+      {/* <div className={cx("inner")}>
         {[data].map((item, index) => {
           console.log(item);
         })}
-      </div>
+      </div> */}
       {/* <div>
         {[data?.data].map((item, index) => {
           return (

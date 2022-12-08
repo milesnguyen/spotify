@@ -21,23 +21,23 @@ function Home() {
     const fetchApi = async () => {
       const data = await homeServices.home(1);
       setTracks(data?.items[4]?.items);
+      setPages(data?.items[5]?.items);
     };
     fetchApi();
   });
-  useEffect(() => {
-    const fetchApi = async () => {
-      const page = await homeServices.home(3);
-      setPages(page?.items[5]?.items);
-    };
-    fetchApi();
-  });
+
+  // useEffect(() => {
+  //   const fetchApi = async () => {
+  //     const page = await homeServices.home(3);
+  //     setPages(page?.items[5]?.items);
+  //   };
+  //   fetchApi();
+  // });
   return (
     <div className={cx("wrapper")}>
-      {[Tracks].map((track, index) => {
-        return <ListColum key={index} data={track} />;
-      })}
-      {[Pages].map((list) => {
-        return <MusicCard data={list} />;
+      <ListColum data={Tracks} />
+      {[Pages].map((list, index) => {
+        return <MusicCard data={list} key={index} />;
       })}
     </div>
   );
