@@ -11,6 +11,7 @@ function Button({
   children,
   circle = false,
   outline = false,
+  primary = false,
   onClick,
   className,
 }) {
@@ -31,6 +32,7 @@ function Button({
     [className]: className,
     circle,
     outline,
+    primary,
   });
 
   return (
@@ -45,6 +47,7 @@ Button.propTypes = {
   href: PropTypes.string,
   children: PropTypes.node.isRequired,
   circle: PropTypes.bool,
+  primary: PropTypes.bool,
   outline: PropTypes.bool,
   className: PropTypes.string,
   onClick: PropTypes.func,

@@ -11,14 +11,15 @@
 }
 
 .inner {
-  display: flex;
-  grid-gap: 16px 24px;
-
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  grid-column-gap: 24px;
+  grid-row-gap: 16px;
 }
 
 .item {
-  width: 32%;
+  // width: 32%;
   height: 80px;
   display: flex;
   align-items: center;
@@ -46,9 +47,19 @@
   display: flex;
   align-items: center;
   padding: 0 16px;
+
   span {
     font-family: var(--font);
     line-height: 2.6rem;
+    font-weight: 700;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    margin-top: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    white-space: normal;
   }
 }
 

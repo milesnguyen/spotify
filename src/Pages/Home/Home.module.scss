@@ -1,3 +1,21 @@
 .wrapper {
   color: var(--white);
 }
+.title {
+  line-height: 4.8rem;
+  display: flex;
+  align-items: center;
+  margin-top: 24px;
+}
+.release {
+  margin: 24px 0;
+}
+.control {
+  margin: 24px 0;
+}
+.items {
+  display: none;
+}
+.active {
+  display: block !important;
+}

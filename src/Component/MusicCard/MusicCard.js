@@ -8,17 +8,11 @@ const cx = classNames.bind(styles);
 function MusicCard(data) {
   return (
     <div className={cx("wrapper")}>
-      <h2 className={cx("title")}>Nhạc Mới Mỗi Ngày</h2>
-      {/* <div className={cx("inner")}>
-        {[data].map((item, index) => {
-          console.log(item);
-        })}
-      </div> */}
-      {/* <div>
+      <div>
         {[data?.data].map((item, index) => {
           return (
             <div className={cx("inner")} key={index}>
-              {[item].map((list) => {
+              {item.map((list) => {
                 return (
                   <Link
                     to={`/id=${list?.encodeId}`}
@@ -38,7 +32,7 @@ function MusicCard(data) {
             </div>
           );
         })}
-      </div> */}
+      </div>
     </div>
   );
 }
