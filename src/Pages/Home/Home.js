@@ -36,31 +36,29 @@ function Home() {
     };
     fetchApi();
   });
-  useEffect(() => {
-    setAll(true);
-  });
+  useEffect(() => {});
   const handleClickALl = () => {
     setAll(true);
-    // if (All === true) {
-    //   setVpop(false);
-    //   setOthers(false);
-    // }
+    if (All === true) {
+      setVpop(false);
+      setOthers(false);
+    }
     console.log("all", All);
   };
   const handleClickvPop = () => {
     setVpop(true);
-    // if (Vpop === true) {
-    //   setAll(false);
-    //   setOthers(false);
-    // }
+    if (Vpop === true) {
+      setAll(false);
+      setOthers(false);
+    }
     console.log("vPop", Vpop);
   };
   const handleClickOthers = () => {
     setOthers(true);
-    // if (Others === true) {
-    //   setAll(false);
-    //   setVpop(false);
-    // }
+    if (Others === true) {
+      setAll(false);
+      setVpop(false);
+    }
     console.log("Others", Others);
   };
   return (
