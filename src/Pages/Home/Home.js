@@ -17,49 +17,51 @@ function Home() {
   const [ReleaseOthers, setReleaseOthers] = useState([]);
   const [Title, setTitle] = useState([]);
   const [Title1, setTitle1] = useState([]);
-  const [All, setAll] = useState(false);
-  const [Vpop, setVpop] = useState(false);
-  const [Others, setOthers] = useState(false);
+  const [All, setAll] = useState();
+  const [Vpop, setVpop] = useState();
+  const [Others, setOthers] = useState();
 
   /* Fetching data from the api and setting the state of the data. */
   useEffect(() => {
     const fetchApi = async () => {
       const data = await homeServices.home(1);
+      console.log(data);
       setTracks(data?.items[4]?.items);
       setPages(data?.items[5]?.items);
-      setReleaseAll(data?.items[3]?.items.all.slice(0, 6));
-      setReleasevPop(data?.items[3]?.items.vPop.slice(0, 6));
-      setReleaseOthers(data?.items[3]?.items.others.slice(0, 6));
-      setTop(data?.items[9].items.slice(0, 6));
+      setReleaseAll(data?.items[2]?.items.all);
+      setReleasevPop(data?.items[2]?.items.vPop);
+      setReleaseOthers(data?.items[2]?.items.others);
+      setTop(data?.items[6].items.slice(0, 6));
       setTitle(data?.items[5].title);
-      setTitle1(data?.items[9].title);
+      setTitle1(data?.items[6].title);
     };
     fetchApi();
   });
-  useEffect(() => {});
+  console.log(All);
+  console.log(Vpop);
+  console.log(Others);
+  // useEffect(() => {
+  //   setAll(true);
+  //   setVpop(false);
+  //   setOthers(false);
+  // });
   const handleClickALl = () => {
     setAll(true);
-    if (All === true) {
-      setVpop(false);
-      setOthers(false);
-    }
     console.log("all", All);
+    setVpop(false);
+    setOthers(false);
   };
   const handleClickvPop = () => {
     setVpop(true);
-    if (Vpop === true) {
-      setAll(false);
-      setOthers(false);
-    }
     console.log("vPop", Vpop);
+    setAll(false);
+    setOthers(false);
   };
   const handleClickOthers = () => {
     setOthers(true);
-    if (Others === true) {
-      setAll(false);
-      setVpop(false);
-    }
     console.log("Others", Others);
+    setAll(false);
+    setVpop(false);
   };
   return (
     <div className={cx("wrapper")}>
